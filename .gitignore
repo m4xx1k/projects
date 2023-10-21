@@ -1,0 +1,10 @@
+.idea
+/.idea
+backend/node_modules
+client/node_modules
+/backend/node_modules
+/client/node_modules
+backend/.env
+client/.env
+backend/.idea
+client/.idea
