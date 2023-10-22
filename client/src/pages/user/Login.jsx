@@ -1,6 +1,6 @@
 import React from 'react';
 import {useForm} from "react-hook-form";
-import {UiTextField} from "../../shared/uikit/UITextField/TextField.jsx";
+import {UITextField} from "../../shared/uikit/";
 import {useSingInMutation} from "../../redux/user/userApiSlice.js";
 import {auth} from "../../redux/user/userSlice.js";
 import {useNavigate} from "react-router-dom";
@@ -33,13 +33,13 @@ const Login = () => {
             <UITitle>Вхід</UITitle>
 
             <form className={'max-w-sm mx-auto flex flex-col items-center w-80'} onSubmit={handleSubmit(signIn)}>
-            <UiTextField
+            <UITextField
                 label="Пошта"
                 inputProps={{type: "text", ...register("email", {required: true})}}
                 error={errors.email}
             />
 
-            <UiTextField
+            <UITextField
                 label="Пароль"
                 inputProps={{type: "password", ...register("password", {required: true})}}
                 error={errors.password}

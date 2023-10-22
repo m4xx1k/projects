@@ -1,13 +1,12 @@
 import React from 'react';
-import {UiTextField} from "../../shared/uikit/UITextField/TextField.jsx";
-import {UiSelect} from "../../shared/uikit/UISelect.jsx";
+import {UITextField,UISelect} from "../../shared/uikit/";
 import {ProjectComplexity, ProjectStatus} from "../../shared/constants.js";
 import {useForm} from "react-hook-form";
 import {useCreateProjectMutation, useUpdateProjectMutation} from "../../redux/project/projectApiSlice.js";
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 
-const ProjectFrom = ({type = 'create', project}) => {
+const ProjectForm = ({type = 'create', project}) => {
     const {user} = useSelector(state => state.user)
     const {register, handleSubmit, formState: {errors}} = useForm({defaultValues:project});
     const [handleCreate, {isLoading: createLoading}] = useCreateProjectMutation()
@@ -48,47 +47,47 @@ const ProjectFrom = ({type = 'create', project}) => {
     }
     return (
         <form className={'max-w-sm mx-auto mt-10'} onSubmit={handleSubmit(submit)}>
-            <UiTextField
+            <UITextField
                 label="Назва"
                 inputProps={{type: "text", ...register("name", {required: true})}}
                 error={errors.name}
             />
 
-            <UiTextField
+            <UITextField
                 label="Опис"
                 inputProps={{type: "text", ...register("description", {required: true})}}
                 error={errors.description}
 
             />
 
-            <UiSelect label={'Складність'} options={ProjectComplexity}
+            <UISelect label={'Складність'} options={ProjectComplexity}
                       inputProps={{...register('complexity', {required: 'true'})}}/>
 
-            <UiTextField
+            <UITextField
                 label="Тривалість розробки"
                 inputProps={{type: "number", ...register("developmentTime", {required: true})}}
                 error={errors.developmentTime}
 
             />
 
-            <UiTextField
+            <UITextField
                 label="Стек технологій"
                 inputProps={{type: "text", ...register("stack", {required: true})}}
                 error={errors.developmentTime}
 
             />
 
-            <UiTextField
+            <UITextField
                 label="Предметна область"
                 inputProps={{type: "text", ...register("subjectArea", {required: true})}}
                 error={errors.subjectArea}
 
             />
 
-            <UiSelect label={'Статус'} options={ProjectStatus}
+            <UISelect label={'Статус'} options={ProjectStatus}
                       inputProps={{...register('status', {required: 'true'})}}/>
 
-            <UiTextField
+            <UITextField
                 label="Посилання"
                 inputProps={{type: "text", ...register("link", {required: true})}}
                 error={errors.subjectArea}
@@ -111,4 +110,4 @@ const ProjectFrom = ({type = 'create', project}) => {
     );
 };
 
-export default ProjectFrom;
+export default ProjectForm;

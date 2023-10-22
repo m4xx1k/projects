@@ -1,7 +1,7 @@
 import {useFindAllProjectQuery} from "../../redux/project/projectApiSlice.js";
 import AllProjectsItem from "../../components/projects/AllProjectsItem.jsx";
 import IsCreator from "../../components/user/IsCreator.jsx";
-import UILink from "../../shared/uikit/UILink";
+import {UILink} from "../../shared/uikit/";
 
 const AllProjectsPage = () => {
 

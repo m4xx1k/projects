@@ -7,17 +7,20 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 url: 'user/login',
                 method: 'POST',
                 body
-            })
+            }),
+            invalidatesTags:['User']
         }),
         singUp: build.mutation({
             query: body => ({
                 url: 'user/registration',
                 method: 'POST',
                 body
-            })
+            }),
+            invalidatesTags:['User']
         }),
         findUserById: build.query({
-            query: () => `user/me`
+            query: () => `user/me`,
+            providesTags:['User']
         })
 
     })

@@ -1,10 +1,9 @@
 import React from 'react';
-import UITitle from "../../../shared/uikit/UITitle.jsx";
 import {
     useAllowParticipantRequestMutation,
     useForbidParticipantRequestMutation
 } from "../../../redux/projectParticipant/projectParticipantApiSlice.js";
-import UIButton from "../../../shared/uikit/UIButton.jsx";
+import {UIButton, UITitle} from "../../../shared/uikit/";
 
 const ProjectRequestsItem = ({request, project}) => {
     const [allow] = useAllowParticipantRequestMutation()

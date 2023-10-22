@@ -10,6 +10,7 @@ const UiButton = ({
             'green': 'bg-green-400',
             'red': 'bg-rose-500',
             'orange': 'bg-orange-400',
+            'blue': 'bg-blue-500',
         }[bg], 'px-3 font-bold py-1 rounded text-sm border-none outline-none', className)}
                 {...rest}>
             {children}

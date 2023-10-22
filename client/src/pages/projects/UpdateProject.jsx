@@ -1,6 +1,6 @@
 import React from 'react';
-import UiTitle from "../../shared/uikit/UITitle.jsx";
-import ProjectFrom from "../../components/projects/ProjectFrom.jsx";
+import {UITitle} from "../../shared/uikit/";
+import ProjectForm from "../../components/projects/ProjectForm.jsx";
 import {useParams} from "react-router-dom";
 import {useFindOneProjectQuery} from "../../redux/project/projectApiSlice.js";
 
@@ -10,9 +10,9 @@ const UpdateProject = () => {
 
     return (
         <>
-            <UiTitle size={'2xl'}>Редагування Проекту</UiTitle>
+            <UITitle size={'2xl'}>Редагування Проекту</UITitle>
             {
-                data?.project && <ProjectFrom type={'update'} project={data?.project}/>
+                data?.project && <ProjectForm type={'update'} project={data?.project}/>
             }
 
         </>

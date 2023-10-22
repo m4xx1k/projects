@@ -1,11 +1,10 @@
 import React from 'react';
-import UIValue from "../../shared/uikit/UIValue.jsx";
 import {ProjectComplexity, ProjectStatus} from "../../shared/constants.js";
 import {Link} from "react-router-dom";
-import UILink from "../../shared/uikit/UILink.jsx";
+import {UILink, UIValue} from "../../shared/uikit/";
+import {days} from "../../shared/utils.js";
 
 const AllProjectsItem = ({project}) => {
-    console.log(project)
     return (
         <div className={'flex flex-col gap-1 p-4 w-full rounded-md bg-gray-200'}>
             <UILink to={`/project/${project._id}`} underline>
@@ -26,7 +25,7 @@ const AllProjectsItem = ({project}) => {
                 <UIValue name={'К-сть учасників'}
                          value={project.participantsCount}/>
                 <UIValue name={'Тривалість розробки'}
-                         value={project.developmentTime}/>
+                         value={days(project.developmentTime)}/>
             </div>
 
             <UIValue name={'Стек'}

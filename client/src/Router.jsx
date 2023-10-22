@@ -10,7 +10,8 @@ import ProjectPage from "./pages/projects/ProjectPage.jsx";
 import Layout from "./components/layout/Layout.jsx";
 import Profile from "./pages/user/Profile.jsx";
 import ProjectParticipants from "./pages/projects/ProjectParticipants.jsx";
-
+import ProjectTasks from "./pages/projects/ProjectTasks.jsx";
+import TaskCreate from "./pages/projects/TaskCreate.jsx";
 
 
 function Router() {
@@ -21,6 +22,7 @@ function Router() {
                     {/*public routes*/}
                     <Route path="/" element={<AllProjectsPage/>}/>
                     <Route path={'/project/:id'} element={<ProjectPage/>}/>
+                    <Route path={'/task/:id'} element={<ProjectTasks/>}/>
                     <Route path="/registration" element={<Registration/>}/>
                     <Route path="/login" element={<Login/>}/>
 
@@ -31,9 +33,12 @@ function Router() {
 
                     {/*protected routes for creator*/}
                     <Route element={<ProtectedRoute allowedRoles={['creator']}/>}>
+                        {/*projects*/}
                         <Route path={'/project/create'} element={<CreateProject/>}/>
                         <Route path={'/project/participants/:id'} element={<ProjectParticipants/>}/>
                         <Route path={'/project/update/:id'} element={<UpdateProject/>}/>
+                        {/*tasks*/}
+                        <Route path={'/task/create/:id'} element={<TaskCreate/>}/>
                     </Route>
 
                     {/*protected routes for participant*/}

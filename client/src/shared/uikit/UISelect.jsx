@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useId } from "react";
 
-export function UiSelect({
+ function UiSelect({
                              className,
                              error,
                              label,
@@ -36,3 +36,4 @@ export function UiSelect({
         </div>
     );
 }
+export default UiSelect

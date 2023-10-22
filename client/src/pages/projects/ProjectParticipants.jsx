@@ -4,9 +4,9 @@ import {
     useFindAllProjectParticipantsQuery,
     useFindAllProjectRequestsQuery
 } from "../../redux/projectParticipant/projectParticipantApiSlice.js";
-import UITitle from "../../shared/uikit/UITitle.jsx";
+import {UITitle} from "../../shared/uikit/";
 import {useParams} from "react-router-dom";
-import ProjectRequestsList from "../../components/projects/ProjectRequest/ProjectRequestsList.jsx";
+import ProjectRequestsList from "../../components/projects/ProjectRequests/ProjectRequestsList.jsx";
 import ProjectParticipantsList from "../../components/projects/ProjectParticipants/ProjectParticipantsList.jsx";
 import IsCreator from "../../components/user/IsCreator.jsx";
 
@@ -24,7 +24,7 @@ const ProjectParticipants = () => {
                 <ProjectRequestsList project={project.project} requests={requests.filter(req=>req.status==='new')}/>
 
             </IsCreator>
-            <ProjectParticipantsList participants={participants} project={project}/>
+            <ProjectParticipantsList id={id}/>
         </div>
     );
 };

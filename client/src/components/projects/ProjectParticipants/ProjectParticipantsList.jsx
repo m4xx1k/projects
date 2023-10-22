@@ -1,9 +1,11 @@
 import React from 'react';
-import UITitle from "../../../shared/uikit/UITitle.jsx";
+import {UITitle} from "../../../shared/uikit/";
 import ProjectParticipantsItem from "./ProjectParticipantsItem.jsx";
+import {useFindAllProjectParticipantsQuery} from "../../../redux/projectParticipant/projectParticipantApiSlice.js";
 
-const ProjectParticipantsList = ({participants, project}) => {
-    if (!Array.isArray(participants)) return null
+const ProjectParticipantsList = ({id, slice}) => {
+    const {data: participants} = useFindAllProjectParticipantsQuery(id)
+
     return (
         <>
             <UITitle align={'start'}>Учасники</UITitle>
@@ -34,8 +36,9 @@ const ProjectParticipantsList = ({participants, project}) => {
                 </thead>
                 <tbody>
                 {
-                    participants.map(participant => <ProjectParticipantsItem participant={participant.userId}
-                                                                             key={participant._id}/>)
+                    Array.isArray(participants) && (participants?.slice(0, slice) ?? participants).map(participant =>
+                        <ProjectParticipantsItem participant={participant.userId}
+                                                 key={participant._id}/>)
                 }
                 </tbody>
             </table>

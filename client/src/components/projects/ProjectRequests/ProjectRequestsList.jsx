@@ -1,5 +1,5 @@
 import React from 'react';
-import UITitle from "../../../shared/uikit/UITitle.jsx";
+import {UITitle} from "../../../shared/uikit/";
 import ProjectRequestsItem from "./ProjectRequestsItem.jsx";
 
 const ProjectRequestsList = ({requests, project}) => {
