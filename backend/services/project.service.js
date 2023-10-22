@@ -1,8 +1,11 @@
 const Project = require('../models/Project.model');
+const ProjectParticipant = require('../models/ProjectParticipant.model')
 
 class ProjectService {
     static async create(projectData) {
-        return await Project.create(projectData);
+        const project = await Project.create({...projectData, participantsCount: 1});
+        await ProjectParticipant.create({projectId: project._id, userId: projectData.userId})
+        return project
     }
 
     static async get(id) {

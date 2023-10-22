@@ -11,7 +11,7 @@ class ProjectController {
             developmentTime,
             subjectArea,
             stack,
-            participantsCount,
+            // participantsCount,
             status,
             link,
             userId
@@ -24,7 +24,7 @@ class ProjectController {
                 complexity,
                 developmentTime,
                 subjectArea,
-                participantsCount,
+                // participantsCount,
                 status,
                 stack,
                 link,
