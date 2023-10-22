@@ -6,6 +6,7 @@ import {auth} from "../../redux/user/userSlice.js";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import UITitle from "../../shared/uikit/UITitle.jsx";
+import UILink from "../../shared/uikit/UILink.jsx";
 
 const Login = () => {
     const {register, handleSubmit, formState:{errors}} = useForm();
@@ -45,7 +46,8 @@ const Login = () => {
 
             />
             <button disabled={isLoading} className={'bg-blue-500 text-white px-4 py-1 rounded mx-auto mt-6'} type="submit">Ввійти</button>
-        </form>
+            <UILink to={'/registration'} underline>Реєстрація</UILink>
+            </form>
         </div>
     );
 };

@@ -9,6 +9,7 @@ import UpdateProject from "./pages/projects/UpdateProject.jsx";
 import ProjectPage from "./pages/projects/ProjectPage.jsx";
 import Layout from "./components/layout/Layout.jsx";
 import Profile from "./pages/user/Profile.jsx";
+import ProjectParticipants from "./pages/projects/ProjectParticipants.jsx";
 
 
 
@@ -31,6 +32,7 @@ function Router() {
                     {/*protected routes for creator*/}
                     <Route element={<ProtectedRoute allowedRoles={['creator']}/>}>
                         <Route path={'/project/create'} element={<CreateProject/>}/>
+                        <Route path={'/project/participants/:id'} element={<ProjectParticipants/>}/>
                         <Route path={'/project/update/:id'} element={<UpdateProject/>}/>
                     </Route>
 

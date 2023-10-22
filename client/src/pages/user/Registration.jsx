@@ -106,7 +106,7 @@ const Registration = () => {
             <button disabled={isLoading} className={'bg-blue-500 text-white px-4 py-1 rounded mx-auto mt-6'}
                     type="submit">Зареєструватись
             </button>
-            {/*{errorMessage && <div className={'text-rose-500'}>{errorMessage}</div>}*/}
+            <UILink to={'/login'} underline>Вхід</UILink>
         </form>
         </div>
     );

@@ -7,7 +7,7 @@ const Layout = () => {
 
     return <>
         <Header/>
-        <main className={'max-w-screen-md mx-auto p-10'}>
+        <main className={'max-w-screen-lg mx-auto p-10'}>
             <Outlet/>
         </main>
     </>
