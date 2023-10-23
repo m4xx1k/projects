@@ -1,12 +1,10 @@
-// controllers/AuthController.js
-
-const AuthService = require('../services/auth.service');
+const UserService = require('../services/user.service');
 
 class AuthController {
     async register(req, res) {
         const {fullname, password, course, specialty, faculty, link, about, email, phone} = req.body;
         try {
-            const data = await AuthService.register({
+            const data = await UserService.register({
                 fullname,
                 password,
                 course,
@@ -19,7 +17,8 @@ class AuthController {
             });
             res.json(data);
         } catch (error) {
-            res.status(400).json({error: error.message});
+            console.log(error)
+            res.status(500).json({error: error.message});
         }
     }
 
@@ -27,23 +26,57 @@ class AuthController {
         const {email, password} = req.body;
 
         try {
-            const data = await AuthService.login({email, password});
+            const data = await UserService.login({email, password});
             res.json(data);
         } catch (error) {
-            res.status(401).json({error: error.message});
+            console.log(error)
+            res.status(500).json({error: error.message});
         }
     }
 
-    async me(req, res) {
-        const {id} = req?.user
-        const user = await AuthService.me(id);
+    async findOne(req, res) {
+        try {
+            const {id} = req.params
+            const user = await UserService.findOne(id);
 
-        if (user) {
             res.status(200).json(user);
-        } else {
-            res.status(401).json({ message: 'Unauthorized.' });
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({message: error.message || 'Unauthorized.'});
+
+
         }
     }
+
+    async userProjects(req, res) {
+        try {
+            const {id} = req.params
+            const projects = await UserService.userProjects(id);
+
+            res.status(200).json(projects);
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({message: error.message || 'Unauthorized.'});
+
+
+        }
+    }
+
+    async userTasks(req, res) {
+        try {
+            const {id} = req.params
+            const tasks = await UserService.userTasks(id);
+
+            res.status(200).json(tasks);
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({message: error.message || 'Unauthorized.'});
+
+
+        }
+    }
+
+
 }
 
 module.exports = new AuthController();

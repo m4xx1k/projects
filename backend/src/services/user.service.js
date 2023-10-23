@@ -1,15 +1,17 @@
 const User = require('../models/User.model');
+const Task = require('../models/Task.model');
+const ProjectParticipant = require('../models/ProjectParticipant.model');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-class AuthService {
+class UserService {
     async register({password, ...rest}) {
         try {
             const hashedPassword = await bcrypt.hash(password, 10);
             const user = await User.create({password: hashedPassword, ...rest});
-            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '8h' });
+            const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: '8h'});
 
-            return { token, user };
+            return {token, user};
         } catch (e) {
             console.log(e);
         }
@@ -26,23 +28,25 @@ class AuthService {
             throw new Error('Invalid password');
         }
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '8h' });
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: '8h'});
 
-        return { token, user };
+        return {token, user};
     }
 
-    async verifyToken(token) {
-        try {
-            return jwt.verify(token, process.env.JWT_SECRET);
-        } catch (error) {
-            throw new Error('Invalid token');
-        }
-    }
-    async me(id) {
+    async findOne(id) {
+
         return await User.findById(id);
+    }
+
+    async userProjects(id) {
+        return await ProjectParticipant.find({userId: id}).populate('projectId')
+    }
+
+    async userTasks(id) {
+        return await Task.find({assignedTo: id}).populate('project')
     }
 
 
 }
 
-module.exports = new AuthService();
+module.exports = new UserService();
