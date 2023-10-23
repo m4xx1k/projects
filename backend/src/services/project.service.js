@@ -1,5 +1,9 @@
 const Project = require('../models/Project.model');
+const Task = require('../models/Task.model');
+const TaskDeclined = require('../models/TaskDeclined.model');
+const Message = require('../models/Message.model');
 const ProjectParticipant = require('../models/ProjectParticipant.model')
+const ProjectParticipantRequest = require('../models/ProjectParticipantRequest.model')
 
 class ProjectService {
     static async create(projectData) {
@@ -23,13 +27,17 @@ class ProjectService {
         }
         return project;
     }
-
+    static async find(data){
+        return await Project.find(data)
+    }
     static async delete(id) {
-        const project = await Project.findByIdAndDelete(id);
-        if (!project) {
-            throw new Error('Project not found');
-        }
-        return project;
+        await Project.findByIdAndDelete(id);
+        await ProjectParticipantRequest.deleteMany({project: id})
+        await ProjectParticipant.deleteMany({projectId: id})
+        await Task.deleteMany({project: id})
+        await TaskDeclined.deleteMany({project: id})
+        await Message.deleteMany({project: id})
+        return true
     }
 
     static async list(filter) {
@@ -43,7 +51,7 @@ class ProjectService {
             if (!Number.isNaN(development[0])) developmentTime.$gte = development[0]
             if (!Number.isNaN(development[1])) developmentTime.$lte = development[1]
             const req = {participantsCount, developmentTime}
-            if (status && status!=="Всі") req.status = status
+            if (status && status !== "Всі") req.status = status
             return await Project.find(req)
 
         } else {

@@ -34,6 +34,27 @@ class AuthController {
         }
     }
 
+    async update(req, res) {
+        const data = req.body;
+        try {
+            const user = await UserService.update(data);
+            res.json(user);
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({error: error.message});
+        }
+    }
+    async delete(req, res) {
+        const {id} = req.params;
+        try {
+            const user = await UserService.delete(id);
+            res.json(user);
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({error: error.message});
+        }
+    }
+
     async findOne(req, res) {
         try {
             const {id} = req.params

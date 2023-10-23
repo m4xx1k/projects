@@ -45,7 +45,7 @@ export const projectParticipantApiSlice = apiSlice.injectEndpoints({
         }),
         findAvailableProjectParticipants: build.query({
             query: id => `projectParticipant/availableParticipants/${id}`,
-            providesTags: ['ProjectParticipant', "ProjectRequest"   ]
+            providesTags: ['ProjectParticipant', "ProjectRequest", 'Project']
         }),
     })
 })

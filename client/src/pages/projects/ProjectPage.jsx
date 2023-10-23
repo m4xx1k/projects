@@ -1,5 +1,5 @@
 import React from 'react';
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useDeleteProjectMutation, useFindOneProjectQuery} from "../../redux/project/projectApiSlice.js";
 import {UITitle, UILink, UIButton, UIValue, UISkeleton} from "../../shared/uikit/";
 import {ProjectComplexity, ProjectStatus} from "../../shared/constants.js";
@@ -47,13 +47,18 @@ const ProjectPage = () => {
 
 
 const ProjectControls = ({project}) => {
+    const navigate = useNavigate()
     const [deleteProject] = useDeleteProjectMutation()
+    const handleDelete = async ()=>{
+        await deleteProject(project._id)
+        navigate('/')
+    }
     if (!project) return null
     return (
         <div className={'self-end flex items-center gap-4'}>
             <UILink to={`/project/update/${project._id}`} bg={'orange'} className={'px-1'}>Редагувати
             </UILink>
-            <UIButton onClick={() => deleteProject(project._id)} bg={'red'} className={'px-1'}>
+            <UIButton onClick={handleDelete} bg={'red'} className={'px-1'}>
                 Видалити
             </UIButton>
         </div>

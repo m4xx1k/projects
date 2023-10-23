@@ -12,6 +12,7 @@ import ProjectParticipants from "./pages/projects/ProjectParticipants.jsx";
 import ProjectTasks from "./pages/projects/ProjectTasks.jsx";
 import TaskCreate from "./pages/projects/TaskCreate.jsx";
 import ProjectChat from "./pages/projects/ProjectChat.jsx";
+import EditProfile from "./pages/user/EditProfile.jsx";
 
 
 function Router() {
@@ -26,6 +27,7 @@ function Router() {
                     <Route path="/registration" element={<Registration/>}/>
                     <Route path="/login" element={<Login/>}/>
 
+                    <Route path={'/user/update/:id'} element={<EditProfile/>}/>
                     <Route path={'/user/:id'} element={<Profile/>}/>
                     <Route path={'/chat/:id'} element={<ProjectChat/>}/>
 

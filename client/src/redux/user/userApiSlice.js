@@ -18,6 +18,21 @@ export const userApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['User']
         }),
+        updateUser: build.mutation({
+            query: body => ({
+                url: 'user/update',
+                method: 'PUT',
+                body
+            }),
+            invalidatesTags: ['User']
+        }),
+        deleteUser: build.mutation({
+            query: id => ({
+                url: `user/delete/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['User']
+        }),
         findUserById: build.query({
             query: id => `user/${id}`,
             providesTags: ['User']
@@ -33,5 +48,5 @@ export const userApiSlice = apiSlice.injectEndpoints({
     })
 })
 
-export const {useSingInMutation, useSingUpMutation, useFindUserByIdQuery
+export const {useDeleteUserMutation,useSingInMutation, useSingUpMutation, useFindUserByIdQuery, useUpdateUserMutation
 ,useFindUserProjectsQuery,useFindUserTasksQuery  } = userApiSlice
