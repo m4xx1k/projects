@@ -2,9 +2,11 @@ import React from 'react';
 import {UITitle} from "../../../shared/uikit/";
 import ProjectParticipantsRow from "./row.jsx";
 import {useFindAllProjectParticipantsQuery} from "../../../redux/projectParticipant/projectParticipantApiSlice.js";
+import {useFindOneProjectQuery} from "../../../redux/project/projectApiSlice.js";
 
 const ProjectParticipantsList = ({id, slice}) => {
     const {data: participants} = useFindAllProjectParticipantsQuery(id)
+    const {data: project} = useFindOneProjectQuery(id)
 
     return (
         <>
@@ -37,7 +39,7 @@ const ProjectParticipantsList = ({id, slice}) => {
                     <tbody>
                     {
                         Array.isArray(participants) && (participants?.slice(0, slice) ?? participants).map(participant =>
-                            <ProjectParticipantsRow project={id} participant={participant.userId}
+                            <ProjectParticipantsRow project={project?.project} participant={participant.userId}
                                                     key={participant._id}/>)
                     }
                     </tbody>

@@ -4,16 +4,18 @@ import {TaskComplexity, TaskStatus, TaskUrgency} from "../../shared/constants.js
 import {useForm} from "react-hook-form";
 import {useCreateTaskMutation, useUpdateTaskMutation} from "../../redux/task/taskApiSlice.js";
 import {useNavigate} from "react-router-dom";
-import {useFindAllProjectParticipantsQuery} from "../../redux/projectParticipant/projectParticipantApiSlice.js";
+import {
+    useFindAvailableProjectParticipantsQuery
+} from "../../redux/projectParticipant/projectParticipantApiSlice.js";
 import {isArray} from "../../shared/utils.js";
 
 const TaskForm = ({type = 'create', task, project}) => {
     const navigate = useNavigate()
-    const {data: users} = useFindAllProjectParticipantsQuery(project)
+    const {data: users} = useFindAvailableProjectParticipantsQuery(project)
     const usersToSelect = isArray(users) ? [{
         value: null,
         label: '-'
-    }, ...users.map(({userId: user}) => ({value: user._id, label: user.email}))] : [{value: null, label: '-'}]
+    }, ...users.map(({userId: user}) => ({value: user._id, label: user.fullname}))] : [{value: null, label: '-'}]
 
     const {register, handleSubmit, formState: {errors}, control} = useForm({defaultValues: task});
     const [handleCreate, {isLoading: createLoading}] = useCreateTaskMutation()

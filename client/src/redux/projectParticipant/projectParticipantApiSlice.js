@@ -16,6 +16,13 @@ export const projectParticipantApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['ProjectRequest']
         }),
+        checkParticipation: build.query({
+            query: ({userId, projectId}) => ({
+                url: `projectParticipant/check/${projectId}/${userId}`,
+                method: 'GET',
+            }),
+            invalidatesTags: ['ProjectRequest', 'ProjectParticipant']
+        }),
         requestParticipantRequest: build.mutation({
             query: body => ({
                 url: 'projectParticipant/request',
@@ -26,23 +33,29 @@ export const projectParticipantApiSlice = apiSlice.injectEndpoints({
         }),
         findAllNewProjectRequests: build.query({
             query: id => `projectParticipant/requests/${id}?status=new}`,
-            providesTags: ['ProjectParticipant','ProjectRequest']
+            providesTags: ['ProjectParticipant', 'ProjectRequest']
         }),
         findAllProjectRequests: build.query({
             query: id => `projectParticipant/requests/${id}`,
-            providesTags: ['ProjectParticipant','ProjectRequest']
+            providesTags: ['ProjectParticipant', 'ProjectRequest']
         }),
         findAllProjectParticipants: build.query({
             query: id => `projectParticipant/participants/${id}`,
             providesTags: ['ProjectParticipant', "ProjectRequest"]
         }),
+        findAvailableProjectParticipants: build.query({
+            query: id => `projectParticipant/availableParticipants/${id}`,
+            providesTags: ['ProjectParticipant', "ProjectRequest"   ]
+        }),
     })
 })
 
 export const {
+    useCheckParticipationQuery,
     useAllowParticipantRequestMutation,
     useForbidParticipantRequestMutation,
     useRequestParticipantRequestMutation,
     useFindAllProjectRequestsQuery,
-    useFindAllProjectParticipantsQuery
+    useFindAllProjectParticipantsQuery,
+    useFindAvailableProjectParticipantsQuery,
 } = projectParticipantApiSlice

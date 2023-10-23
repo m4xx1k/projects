@@ -28,19 +28,15 @@ function Router() {
                     <Route path="/login" element={<Login/>}/>
 
                     {/*protected routes*/}
-                    <Route element={<ProtectedRoute/>}>
-                        <Route path={'/user/profile'} element={<Profile/>}/>
-                        <Route path={'/chat/:id'} element={<ProjectChat/>}/>
-                    </Route>
+                    <Route path={'/user/profile'} element={<Profile/>}/>
+                    <Route path={'/chat/:id'} element={<ProjectChat/>}/>
 
                     {/*protected routes for creator*/}
-                    <Route element={<ProtectedRoute allowedRoles={['creator']}/>}>
-                        {/*projects*/}
-                        <Route path={'/project/create'} element={<CreateProject/>}/>
-                        <Route path={'/project/update/:id'} element={<UpdateProject/>}/>
-                        {/*tasks*/}
-                        <Route path={'/task/create/:id'} element={<TaskCreate/>}/>
-                    </Route>
+                    {/*projects*/}
+                    <Route path={'/project/create'} element={<CreateProject/>}/>
+                    <Route path={'/project/update/:id'} element={<UpdateProject/>}/>
+                    {/*tasks*/}
+                    <Route path={'/task/create/:id'} element={<TaskCreate/>}/>
 
                     {/*protected routes for participant*/}
 

@@ -9,8 +9,10 @@ import ParticipantProjectRequestButton
     from "../../components/projects/ProjectRequests/ParticipantProjectRequestButton.jsx";
 import ProjectParticipantsList from "../../components/projects/ProjectParticipantsTable/index.jsx";
 import ProjectTaskList from "../../components/projects/ProjectTasksTable/index.jsx";
+import {useSelector} from "react-redux";
 
 const ProjectPage = () => {
+    const {user} = useSelector(state => state.user)
     const {id} = useParams()
     const {data} = useFindOneProjectQuery(id)
 
@@ -18,14 +20,13 @@ const ProjectPage = () => {
     return (
         <div className={'flex flex-col items-center mx-auto gap-8'}>
 
-            <IsCreator id={data.project?.userId}>
+            <IsCreator project={data.project._id}>
                 <ProjectControls project={data?.project}/>
             </IsCreator>
 
-            <IsParticipant>
-                <ParticipantProjectRequestButton id={id}/>
-            </IsParticipant>
-            <UILink to={`/chat/${id}`}>Чат</UILink>
+            {data.project.userId !== user?._id && user &&
+                < ParticipantProjectRequestButton id={id}/>
+            }
             <ProjectInfo project={data?.project}/>
 
             <section className={'flex flex-col gap-1 w-full items-center'}>
@@ -67,6 +68,11 @@ const ProjectInfo = ({project}) => {
                          value={ProjectStatus.find(({value}) => value === project.status).label}/>
                 <UIValue name={'Стек'}
                          value={project.stack}/>
+                <IsParticipant project={project._id}>
+                    <UILink to={`/chat/${project._id}`} bg={'green'} className={'w-36 font-bold text-center'}>Чат
+                        Проекту</UILink>
+
+                </IsParticipant>
             </div>
         </>
     )

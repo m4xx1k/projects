@@ -76,8 +76,8 @@ const Registration = () => {
                 {/*    error={errors.role}*/}
                 {/*/>*/}
 
-                <UISelect label={'Роль'} options={UserRoles}
-                          inputProps={{...register('role', {required: 'true'})}}/>
+                {/*<UISelect label={'Роль'} options={UserRoles}*/}
+                {/*          inputProps={{...register('role', {required: 'true'})}}/>*/}
 
 
                 <UITextField

@@ -2,9 +2,8 @@ const express = require("express");
 const TaskController = require('../controllers/task.controller')
 const router = express.Router();
 const authMiddleware = require('../middlewares/auth.middleware');
-const roleMiddleware = require('../middlewares/role.middleware');
 
-router.post("/", authMiddleware, roleMiddleware('creator'), TaskController.create);
+router.post("/", authMiddleware,  TaskController.create);
 
 router.get("/", TaskController.findAll);
 router.post("/filter", TaskController.filter);
@@ -19,5 +18,5 @@ router.get("/:id", TaskController.findById);
 
 router.put("/", authMiddleware, TaskController.update);
 
-router.delete("/:id", authMiddleware, roleMiddleware('creator'), TaskController.delete);
+router.delete("/:id", authMiddleware, TaskController.delete);
 module.exports = router

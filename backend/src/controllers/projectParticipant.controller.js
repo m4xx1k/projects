@@ -62,6 +62,29 @@ class ProjectController {
             res.status(400).json({error: error.message});
         }
     }
+   async availableParticipants(req, res) {
+        const {id} = req.params;
+
+        try {
+            const participants = await ProjectParticipantService.availableParticipants(id);
+            res.json(participants);
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({error: error.message});
+        }
+    }
+
+    async check(req, res) {
+        const data = req.params;
+
+        try {
+            const participant = await ProjectParticipantService.check(data);
+            res.json({participant, isParticipant: !!participant});
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({error: error.message});
+        }
+    }
 
 
 }

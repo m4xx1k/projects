@@ -10,6 +10,7 @@ import {Send, User} from "react-feather";
 import {UIButton, UITextField, UITitle} from "../../shared/uikit/index.js";
 import {clsx} from "clsx";
 import {date, isArray} from "../../shared/utils.js";
+import IsParticipant from "../../components/user/IsParticipant.jsx";
 
 const Message = ({message, user}) => {
     const isUserMessage = message.user._id === user._id
@@ -19,10 +20,10 @@ const Message = ({message, user}) => {
         <div className={clsx("flex items-center gap-2", isUserMessage && 'flex-row-reverse')}>
             <User size={36} className={clsx('p-1 rounded-full', bg)}/>
             <UITitle className={clsx('flex grow', isUserMessage ? 'justify-end ' : 'justify-start')}
-                     size={'sm'}>{isUserMessage ? 'Ви' : message.user.fullname}</UITitle>
+                     size={'md'}>{isUserMessage ? 'Ви' : message.user.fullname}</UITitle>
 
         </div>
-        <p className={clsx('text-sm p-1 rounded-lg mt-1', bg)}>{message.text}</p>
+        <p className={clsx('text-sm py-1 px-2 rounded-lg mt-1', bg)}>{message.text}</p>
         {/*<div className={'underline text-sm'}>{date(message.createdAt)}</div>*/}
     </li>
 }
@@ -38,8 +39,8 @@ const ProjectChat = () => {
         reset()
     }
     return (
-        <>
-            <UITitle>Чат {project?.name}</UITitle>
+        <IsParticipant project={id} goBack={true}>
+            <UITitle>Чат {project?.project.name}</UITitle>
             <div className={'bg-gray-200 p-7 rounded-lg'}>
                 <ul className={'flex flex-col w-full gap-1 bg-white p-4 rounded-md  max-h-[calc(100vh-320px)] overflow-y-scroll'}>
                     {isArray(messages) && messages.map((message, i) => <Message message={message} user={user} key={i}/>
@@ -56,7 +57,7 @@ const ProjectChat = () => {
                 </form>
             </div>
 
-        </>
+        </IsParticipant>
     );
 };
 

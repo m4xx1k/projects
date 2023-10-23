@@ -9,6 +9,7 @@ import {
     useDeleteTaskMutation
 } from "../../../redux/task/taskApiSlice.js";
 import ChangeStatus from "./ChangeStatus.jsx";
+import IsParticipant from "../../user/IsParticipant.jsx";
 
 const ProjectTasksItem = ({task, user, usersTask, isParticipant, isCreator}) => {
     const isUsersTask = usersTask?._id === task?._id
@@ -47,20 +48,18 @@ const ProjectTasksItem = ({task, user, usersTask, isParticipant, isCreator}) => 
                 </div>
                 <p className={'w-2/3 text-sm'}>{task?.description}</p>
             </section>
-            <IsAuth>
 
-                <section className={'self-end flex gap-2'}>
-                    {isCreator &&
-                        <UIButton onClick={handleDelete} bg={'red'}>Видалити Завдання</UIButton>}
-                    {canAssign &&
-                        <UIButton onClick={handleAssign} bg={'blue'}>Обрати Завдання</UIButton>}
-                    {canDecline &&
-                        <UIButton onClick={handleDecline}
-                                  bg={'orange'}>Відкласти
-                            Завдання</UIButton>}
+            <section className={'self-end flex gap-2'}>
+                {isCreator &&
+                    <UIButton onClick={handleDelete} bg={'red'}>Видалити Завдання</UIButton>}
+                {canAssign &&
+                    <UIButton onClick={handleAssign} bg={'blue'}>Обрати Завдання</UIButton>}
+                {canDecline &&
+                    <UIButton onClick={handleDecline}
+                              bg={'orange'}>Відкласти
+                        Завдання</UIButton>}
 
-                </section>
-            </IsAuth>
+            </section>
         </li>
     );
 };

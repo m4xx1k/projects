@@ -58,13 +58,15 @@ class TaskService {
 
     async findFullProjectTasks({creator, user, project, filter}) {
         const participants = await projectParticipantsService.findAllProjectParticipants(project)
-        const isCreator = user === creator//TODO?
+        const isCreator = user === creator
         const isParticipant = participants.some(participant => participant.userId._id.toString() === user)
         const requestForTasks = {project}
         if (isParticipant) requestForTasks.user = user
         if (filter) requestForTasks.filter = filter
         const tasks = await this.findProjectTasks(requestForTasks)
-        const usersTask = isParticipant && tasks?.notDeclined.find(task => task.assignedTo?._id === user)
+        const usersTask = tasks.notDeclined.find(task => {
+            return task.assignedTo?._id.toString() === user
+        })
         return {tasks, isCreator, isParticipant, usersTask, participants}
 
 

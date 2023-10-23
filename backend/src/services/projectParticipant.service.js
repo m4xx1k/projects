@@ -1,6 +1,7 @@
 const ProjectParticipantRequest = require('../models/ProjectParticipantRequest.model');
 const ProjectParticipant = require('../models/ProjectParticipant.model');
 const Project = require('../models/Project.model');
+const Task = require('../models/Task.model');
 
 class ProjectParticipantService {
     static async request(data) {
@@ -26,6 +27,24 @@ class ProjectParticipantService {
 
     static async findAllProjectParticipants(projectId) {
         return await ProjectParticipant.find({projectId}).populate('userId')
+    }
+
+    static async availableParticipants(projectId) {
+        console.log({projectId})
+        const participations = await this.findAllProjectParticipants(projectId)
+        const all = await Task.find({project: projectId})
+        const allIds = all.map(task => task.assignedTo.toString())
+        console.log({allIds})
+        return participations.filter(p => {
+            const participationId = p.userId._id.toString()
+            console.log({participationId})
+            return !allIds.includes(participationId)
+        })
+    }
+
+    static async check({projectId, userId}) {
+
+        return await ProjectParticipant.findOne({projectId, userId})
     }
 
 
