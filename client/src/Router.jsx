@@ -19,7 +19,6 @@ function Router() {
         <BrowserRouter>
             <Routes>
                 <Route element={<Layout/>}>
-                    {/*public routes*/}
                     <Route path="/" element={<AllProjectsPage/>}/>
                     <Route path={'/project/:id'} element={<ProjectPage/>}/>
                     <Route path={'/project/:id/tasks'} element={<ProjectTasks/>}/>
@@ -27,21 +26,15 @@ function Router() {
                     <Route path="/registration" element={<Registration/>}/>
                     <Route path="/login" element={<Login/>}/>
 
-                    {/*protected routes*/}
-                    <Route path={'/user/profile'} element={<Profile/>}/>
+                    <Route path={'/user/:id'} element={<Profile/>}/>
                     <Route path={'/chat/:id'} element={<ProjectChat/>}/>
 
-                    {/*protected routes for creator*/}
-                    {/*projects*/}
                     <Route path={'/project/create'} element={<CreateProject/>}/>
                     <Route path={'/project/update/:id'} element={<UpdateProject/>}/>
-                    {/*tasks*/}
                     <Route path={'/task/create/:id'} element={<TaskCreate/>}/>
 
-                    {/*protected routes for participant*/}
 
 
-                    {/*Not Found*/}
                     <Route path="*" element={<>404</>}/>
 
                 </Route>

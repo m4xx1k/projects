@@ -1,12 +1,14 @@
 import React from 'react';
-import {UITitle} from "../../../shared/uikit/";
+import {UISkeleton, UITitle} from "../../../shared/uikit/";
 import ProjectRequestsItem from "./ProjectRequestsItem.jsx";
 import {useFindAllProjectRequestsQuery} from "../../../redux/projectParticipant/projectParticipantApiSlice.js";
 import IsCreator from "../../user/IsCreator.jsx";
+import {isArray} from "../../../shared/utils.js";
 
 const ProjectRequestsList = ({project}) => {
-    const {data: requests} = useFindAllProjectRequestsQuery(project._id)
-    if (!requests?.length) return null
+    const {data: requests, isLoading} = useFindAllProjectRequestsQuery(project._id)
+    if (!isArray(requests)) return null
+    if (isLoading) return <UISkeleton/>
     return (
         <IsCreator project={project._id}>
             <UITitle align={'start'}>Запити на участь у проекті</UITitle>

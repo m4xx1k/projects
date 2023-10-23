@@ -8,7 +8,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body
             }),
-            invalidatesTags:['User']
+            invalidatesTags: ['User']
         }),
         singUp: build.mutation({
             query: body => ({
@@ -16,14 +16,22 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body
             }),
-            invalidatesTags:['User']
+            invalidatesTags: ['User']
         }),
         findUserById: build.query({
-            query: () => `user/me`,
-            providesTags:['User']
-        })
-
+            query: id => `user/${id}`,
+            providesTags: ['User']
+        }),
+        findUserProjects: build.query({
+            query: id => `user/projects/${id}`,
+            providesTags: ['User', 'ProjectParticipant', 'Project']
+        }),
+        findUserTasks: build.query({
+            query: id => `user/tasks/${id}`,
+            providesTags: ['User', 'Task', 'Project']
+        }),
     })
 })
 
-export const {useSingInMutation, useSingUpMutation, useFindUserByIdQuery} = userApiSlice
+export const {useSingInMutation, useSingUpMutation, useFindUserByIdQuery
+,useFindUserProjectsQuery,useFindUserTasksQuery  } = userApiSlice

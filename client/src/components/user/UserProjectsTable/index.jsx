@@ -1,18 +1,18 @@
 import React from 'react';
-import {useFindFilteredTaskQuery} from "../../../redux/task/taskApiSlice.js";
-import ProjectTasksRow from "./row.jsx";
+import {
+    useFindUserProjectsQuery
+} from "../../../redux/user/userApiSlice.js";
 import {UISkeleton, UITitle} from "../../../shared/uikit/index.js";
 import {isArray} from "../../../shared/utils.js";
+import UserProjectsRow from "./row.jsx";
 
-const ProjectTaskList = ({id, slice}) => {
-    const {data: tasks, isLoading} = useFindFilteredTaskQuery({project: id})
+const UserProjectsTable = ({user}) => {
+    const {data: projects, isLoading} = useFindUserProjectsQuery(user?._id)
     if (isLoading) return <UISkeleton/>
-
-    if (!isArray(tasks)) return null
+    if (!isArray(projects)) return null
     return (
-        // <div>
         <div className={'w-full'}>
-            <UITitle align={'start'}>Завдання</UITitle>
+            <UITitle align={'start'}>Участь у проектах</UITitle>
 
             <div className={'w-full mt-1 px-4 py-2  rounded-lg bg-gray-200'}>
 
@@ -23,21 +23,19 @@ const ProjectTaskList = ({id, slice}) => {
                             Назва
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Виконавець
+                            Роль у проекті
                         </th>
                         <th scope="col" className="px-6 py-3">
                             Статус
                         </th>
-                        <th scope="col" className="px-6 py-3">
-                            Важливість
-                        </th>
+
                     </tr>
                     </thead>
                     <tbody>
                     {
-                        isArray(tasks) && (tasks?.slice(0, slice) ?? tasks).map(task =>
-                            <ProjectTasksRow task={task}
-                                             key={task._id}/>)
+                        projects.map(project =>
+                            <UserProjectsRow project={project.projectId} user={user}
+                                             key={project.projectId._id}/>)
                     }
                     </tbody>
                 </table>
@@ -48,4 +46,5 @@ const ProjectTaskList = ({id, slice}) => {
         ;
 };
 
-export default ProjectTaskList;
+export default UserProjectsTable;
+

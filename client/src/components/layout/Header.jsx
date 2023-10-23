@@ -15,7 +15,7 @@ const Header = () => {
                 {
                     user ?
                         <UILink className={'w-10 h-10 flex items-center justify-center rounded-full'} bg={'blue'}
-                                to={'user/profile'}> <User stroke={'white'}/></UILink>
+                                to={`user/${user._id}`}> <User stroke={'white'}/></UILink>
                         :
                         <UILink className={'w-10 h-10 flex items-center justify-center rounded-full'} bg={'blue'}
                                 to={'/login'}>

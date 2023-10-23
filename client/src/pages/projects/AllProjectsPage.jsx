@@ -1,12 +1,11 @@
 import {useFindAllProjectQuery} from "../../redux/project/projectApiSlice.js";
 import AllProjectsItem from "../../components/projects/AllProjectsItem.jsx";
-import {UILink} from "../../shared/uikit/";
+import {UILink, UILoader} from "../../shared/uikit/";
 import {isArray} from "../../shared/utils.js";
 import ProjectsFilter from "../../components/projects/ProjectsFilter.jsx";
 import {useState} from "react";
 import {ProjectStatusWithAll} from "../../shared/constants.js";
 import {useForm} from "react-hook-form";
-import {Loader} from "react-feather";
 
 const defaultValues = {
     participants: [0, 100],
@@ -30,7 +29,7 @@ const AllProjectsPage = () => {
                             control={control}/>
             {isArray(data?.projects) && !isLoading && data?.projects.map(p => <AllProjectsItem project={p}
                                                                                                key={p._id}/>)}
-            {isLoading && <Loader className={'animate-spin'}/>}
+            {isLoading && <UILoader/>}
         </div>
     );
 };

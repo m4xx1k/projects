@@ -5,8 +5,6 @@ import ProjectForm from "../../components/projects/ProjectForm.jsx";
 
 
 const CreateProject = () => {
-
-
     return (
         <>
             <UITitle size={'2xl'}>Створити Проект</UITitle>

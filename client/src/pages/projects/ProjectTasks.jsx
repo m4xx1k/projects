@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useParams} from "react-router-dom";
-import {UILink, UITitle} from "../../shared/uikit/index.js";
+import {UILink, UISkeleton, UITitle} from "../../shared/uikit/index.js";
 import {useFindOneProjectQuery} from "../../redux/project/projectApiSlice.js";
 import ProjectTasksList from "../../components/projects/ProjectTasksList/";
 import TasksFilter from "../../components/projects/TasksFilter.jsx";
@@ -11,11 +11,13 @@ const defaultValues = {assignedTo: '', urgency: '', complexity: '', status: ''}
 const ProjectTasks = () => {
     const {id} = useParams()
     const [filter, setFilter] = useState({})
-    const {data: project} = useFindOneProjectQuery(id)
+    const {data: project,isLoading} = useFindOneProjectQuery(id)
     const {register, handleSubmit} = useForm({defaultValues})
     const submit = data => {
         setFilter(data)
     }
+    if (isLoading) return <UISkeleton/>
+
     if (!project?.project) return null
     return (
         <div className={'flex flex-col items-center mx-auto gap-8'}>

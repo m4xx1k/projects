@@ -13,7 +13,7 @@ function UiSelect({
     const id = useId();
 
     return (
-        <div className={clsx(`flex flex-col gap-1 mb-1 w-${width}`,className)}>
+        <div className={clsx(`flex flex-col gap-1 w-${width}`,className)}>
             {label && (
                 <label htmlFor={id} className="block text-sm font-bold">
                     {label}

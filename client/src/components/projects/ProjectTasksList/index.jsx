@@ -2,7 +2,7 @@ import React from 'react';
 import {
     useFindFullProjectTasksQuery
 } from "../../../redux/task/taskApiSlice.js";
-import {UITitle} from "../../../shared/uikit/index.js";
+import {UISkeleton, UITitle} from "../../../shared/uikit/index.js";
 import Item from "./item";
 import {useSelector} from "react-redux";
 import {Loader} from "react-feather";
@@ -10,7 +10,8 @@ import {Loader} from "react-feather";
 const ProjectTasksList = ({id, creator, filter}) => {
     const {user} = useSelector(state => state.user)
     const {data, isSuccess, isLoading} = useFindFullProjectTasksQuery({user: user?._id, project: id, creator, filter})
-    console.log({fetchedTasks: data})
+    if (isLoading) return <UISkeleton/>
+
     return (
         <>
             {

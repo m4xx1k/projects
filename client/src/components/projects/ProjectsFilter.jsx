@@ -9,7 +9,7 @@ import {ProjectStatusWithAll} from "../../shared/constants.js";
 const ProjectsFilter = ({onSubmit, control, register, isLoading}) => {
 
     return (
-        <form onSubmit={onSubmit} className={'w-full flex gap-4 items-center'}>
+        <form onSubmit={onSubmit} className={'w-full flex gap-4 items-end'}>
             <div className={'w-60'}>
                 <UITitle size={'sm'} align={'start'} className={'font-medium'}>К-сть учасників</UITitle>
                 <RangeSliderWithController control={control} name={'participants'} min={0} max={100}/>

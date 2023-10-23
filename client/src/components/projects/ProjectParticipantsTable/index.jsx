@@ -1,13 +1,13 @@
 import React from 'react';
-import {UITitle} from "../../../shared/uikit/";
+import {UISkeleton, UITitle} from "../../../shared/uikit/";
 import ProjectParticipantsRow from "./row.jsx";
 import {useFindAllProjectParticipantsQuery} from "../../../redux/projectParticipant/projectParticipantApiSlice.js";
 import {useFindOneProjectQuery} from "../../../redux/project/projectApiSlice.js";
 
 const ProjectParticipantsList = ({id, slice}) => {
-    const {data: participants} = useFindAllProjectParticipantsQuery(id)
-    const {data: project} = useFindOneProjectQuery(id)
-
+    const {data: participants, isLoading: isLoadingParticipants} = useFindAllProjectParticipantsQuery(id)
+    const {data: project, isLoading: isLoadingProject} = useFindOneProjectQuery(id)
+    if (isLoadingProject || isLoadingParticipants) return <UISkeleton/>
     return (
         <>
             <UITitle align={'start'}>Учасники</UITitle>

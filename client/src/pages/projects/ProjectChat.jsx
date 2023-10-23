@@ -9,12 +9,11 @@ import {useForm} from "react-hook-form";
 import {Send, User} from "react-feather";
 import {UIButton, UITextField, UITitle} from "../../shared/uikit/index.js";
 import {clsx} from "clsx";
-import {date, isArray} from "../../shared/utils.js";
+import { isArray} from "../../shared/utils.js";
 import IsParticipant from "../../components/user/IsParticipant.jsx";
 
 const Message = ({message, user}) => {
     const isUserMessage = message.user._id === user._id
-    console.log({message, user})
     const bg = isUserMessage ? 'bg-blue-200' : 'bg-gray-200'
     return <li className={clsx('px-4 py-1 rounded min-w-[240px] max-w-2xl w-fit', isUserMessage && 'self-end')}>
         <div className={clsx("flex items-center gap-2", isUserMessage && 'flex-row-reverse')}>

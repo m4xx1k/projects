@@ -1,16 +1,13 @@
 import React from 'react';
-import {useFindFilteredTaskQuery} from "../../../redux/task/taskApiSlice.js";
-import ProjectTasksRow from "./row.jsx";
+import {useFindUserTasksQuery} from "../../../redux/user/userApiSlice.js";
 import {UISkeleton, UITitle} from "../../../shared/uikit/index.js";
-import {isArray} from "../../../shared/utils.js";
+import UserTasksRow from "./row";
+import {isArray} from "../../../shared/utils";
 
-const ProjectTaskList = ({id, slice}) => {
-    const {data: tasks, isLoading} = useFindFilteredTaskQuery({project: id})
+const UserTasksTable = ({user}) => {
+    const {data: tasks, isLoading} = useFindUserTasksQuery(user._id)
     if (isLoading) return <UISkeleton/>
-
-    if (!isArray(tasks)) return null
     return (
-        // <div>
         <div className={'w-full'}>
             <UITitle align={'start'}>Завдання</UITitle>
 
@@ -23,29 +20,26 @@ const ProjectTaskList = ({id, slice}) => {
                             Назва
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Виконавець
-                        </th>
-                        <th scope="col" className="px-6 py-3">
                             Статус
                         </th>
                         <th scope="col" className="px-6 py-3">
                             Важливість
                         </th>
+
                     </tr>
                     </thead>
                     <tbody>
                     {
-                        isArray(tasks) && (tasks?.slice(0, slice) ?? tasks).map(task =>
-                            <ProjectTasksRow task={task}
-                                             key={task._id}/>)
+                        isArray(tasks) && tasks.map(task =>
+                            <UserTasksRow task={task} user={user}
+                                          key={task._id}/>)
                     }
                     </tbody>
                 </table>
             </div>
         </div>
 
-    )
-        ;
+    );
 };
 
-export default ProjectTaskList;
+export default UserTasksTable;

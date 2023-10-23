@@ -10,6 +10,7 @@ import {
 } from "../../../redux/task/taskApiSlice.js";
 import ChangeStatus from "./ChangeStatus.jsx";
 import IsParticipant from "../../user/IsParticipant.jsx";
+import {Link} from "react-router-dom";
 
 const ProjectTasksItem = ({task, user, usersTask, isParticipant, isCreator}) => {
     const isUsersTask = usersTask?._id === task?._id
@@ -28,7 +29,9 @@ const ProjectTasksItem = ({task, user, usersTask, isParticipant, isCreator}) => 
             <section className={'w-full flex justify-between mt-2 mb-4'}>
                 <div className={'flex flex-col gap-2 w-1/3'}>
                     <UIValue valueWeight={'medium'} name={'Виконавець'}
-                             value={task.assignedTo?.fullname || '-'}/>
+                             value={task.assignedTo?.fullname
+                                 ? <Link to={`/user/${task.assignedTo._id}`}>{task.assignedTo.fullname}</Link>
+                                 : '-'}/>
 
                     <UIValue valueWeight={'medium'} name={'Статус'}
                              value={!isUsersTask ? TaskStatus.find(({value}) => value === task.status)?.label :

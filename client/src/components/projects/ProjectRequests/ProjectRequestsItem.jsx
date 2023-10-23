@@ -4,6 +4,7 @@ import {
     useForbidParticipantRequestMutation
 } from "../../../redux/projectParticipant/projectParticipantApiSlice.js";
 import {UIButton, UITitle, UIValue} from "../../../shared/uikit/";
+import {Link} from "react-router-dom";
 
 const ProjectRequestsItem = ({request, project}) => {
     const [allow] = useAllowParticipantRequestMutation()
@@ -13,7 +14,12 @@ const ProjectRequestsItem = ({request, project}) => {
     const handleForbid = async () => await forbid(request._id)
     return (
         <li className={'flex flex-col gap-2 rounded-md bg-white w-full py-2 px-4'}>
-            <UITitle align={'start'} size={'sm'}>{user.fullname} хоче приєднатись до проекту "{project.name}"</UITitle>
+
+            <UITitle align={'start'} size={'sm'}>
+                <Link to={`/user/${user._id}`}>{user.fullname} </Link>
+                хоче приєднатись до проекту
+                <Link to={`/project/${project._id}`}>"{project.name}"</Link>
+            </UITitle>
             <section className={'flex justify-between gap-2 w-full'}>
                 <div className={'w-2/5 flex flex-col gap-1'}>
                     <UIValue name={'Курс'} value={`${user.course} курс`} valueWeight={'medium'}/>

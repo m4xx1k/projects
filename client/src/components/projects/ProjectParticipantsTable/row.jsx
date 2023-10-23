@@ -1,15 +1,18 @@
 import React from 'react';
 import {useFindOneProjectTaskQuery} from "../../../redux/task/taskApiSlice.js";
 import {useSelector} from "react-redux";
+import {Link} from "react-router-dom";
 
 const ProjectParticipantsRow = ({participant, project}) => {
     const {data: task} = useFindOneProjectTaskQuery({assignedTo: participant?._id, project: project?._id})
-    console.log({participant, project})
     return (
         <tr className="border-b ">
             <th scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap w-48">
-                {participant.fullname}
+                <Link to={`/user/${participant._id}`}>
+
+                    {participant.fullname}
+                </Link>
             </th>
             <td className="px-6 py-4">
                 {participant.course}

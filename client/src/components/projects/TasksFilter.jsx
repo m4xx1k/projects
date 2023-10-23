@@ -13,7 +13,7 @@ const TasksFilter = ({id, onSubmit, register}) => {
         label: p.userId.fullname
     })) : []
     return (
-        <form onSubmit={onSubmit} className={'w-full flex gap-4 items-center'}>
+        <form onSubmit={onSubmit} className={'w-full flex gap-4 items-end'}>
 
             <UISelect label={'Статус'} options={withAll(TaskStatus)} width={20}
                       inputProps={{...register('status')}}/>
