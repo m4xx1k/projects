@@ -10,7 +10,7 @@ function UiTextField({
                      }) {
     const id = useId();
     return (
-        <div className={clsx(className, "flex flex-col gap-1 mb-1 w-full")}>
+        <div className={clsx(className, "flex flex-col gap-1 w-full")}>
             {label && (
                 <label htmlFor={id} className="block text-sm font-bold">
                     {label}

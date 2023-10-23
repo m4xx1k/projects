@@ -1,5 +1,5 @@
 import React from 'react';
-import {UITextField,UISelect} from "../../shared/uikit/";
+import {UITextField, UISelect} from "../../shared/uikit/";
 import {ProjectComplexity, ProjectStatus} from "../../shared/constants.js";
 import {useForm} from "react-hook-form";
 import {useCreateProjectMutation, useUpdateProjectMutation} from "../../redux/project/projectApiSlice.js";
@@ -8,7 +8,7 @@ import {useSelector} from "react-redux";
 
 const ProjectForm = ({type = 'create', project}) => {
     const {user} = useSelector(state => state.user)
-    const {register, handleSubmit, formState: {errors}} = useForm({defaultValues:project});
+    const {register, handleSubmit, formState: {errors}} = useForm({defaultValues: project});
     const [handleCreate, {isLoading: createLoading}] = useCreateProjectMutation()
     const [handleUpdate, {isLoading: updateLoading}] = useUpdateProjectMutation()
     const navigate = useNavigate()
@@ -26,10 +26,10 @@ const ProjectForm = ({type = 'create', project}) => {
     }
     const update = async (formData) => {
         try {
-            const {data} = await handleUpdate({id:project._id,data:formData})
+            const {data} = await handleUpdate({id: project._id, data: formData})
             if (data?.project) {
-                if(type==='create') navigate('/')
-                if(type==='update') navigate(`/project/${project._id}`)
+                if (type === 'create') navigate('/')
+                if (type === 'update') navigate(`/project/${project._id}`)
             }
         } catch (e) {
             console.log(e)
@@ -64,8 +64,8 @@ const ProjectForm = ({type = 'create', project}) => {
                       inputProps={{...register('complexity', {required: 'true'})}}/>
 
             <UITextField
-                label="Тривалість розробки"
-                inputProps={{type: "number", ...register("developmentTime", {required: true})}}
+                label="Тривалість розробки ( 0-360 )"
+                inputProps={{type: "number", ...register("developmentTime", {required: true, min: 0, max: 360})}}
                 error={errors.developmentTime}
 
             />

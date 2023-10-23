@@ -9,7 +9,9 @@ const UIDatePicker = ({
                           className,
                           error,
                           label,
-                          name, control, required
+                          name,
+                          control,
+                          required
                       }) => {
     const id = useId();
     const {
@@ -37,11 +39,11 @@ const UIDatePicker = ({
                 onChange={field.onChange}
                 name={field.name}
                 style={{
-                    background:' rgb(243, 244, 246)',
-                    border:'none',
-                    borderRadius:4
+                    background: ' rgb(243, 244, 246)',
+                    border: 'none',
+                    borderRadius: 4
                 }}
-                className={'border-none outline-none rounded bg-gray-100'}
+                calendarClassName={'border-none outline-none rounded bg-gray-100'}
                 calendarIcon={<Calendar/>}
 
                 minDate={new Date()}

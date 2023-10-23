@@ -1,11 +1,14 @@
 import React from 'react';
 import {UserRoles} from "../../../shared/constants.js";
+import {useFindOneProjectTaskQuery} from "../../../redux/task/taskApiSlice.js";
 
-const ProjectParticipantsItem = ({participant}) => {
+const ProjectParticipantsRow = ({participant, project}) => {
+    const {data: task} = useFindOneProjectTaskQuery({assignedTo: participant?._id, project})
+
     return (
-        <tr className="bg-white border-b ">
+        <tr className="border-b ">
             <th scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap w-48">
                 {participant.fullname}
             </th>
             <td className="px-6 py-4">
@@ -24,8 +27,8 @@ const ProjectParticipantsItem = ({participant}) => {
                 {UserRoles.find(role => role.value === participant.role)?.label}
 
             </td>
-            <td className="px-6 py-4">
-                -
+            <td className="px-6 py-4 whitespace-nowrap w-48">
+                {task ? task?.name : '-'}
 
             </td>
         </tr>
@@ -33,4 +36,4 @@ const ProjectParticipantsItem = ({participant}) => {
     );
 };
 
-export default ProjectParticipantsItem;
+export default ProjectParticipantsRow;

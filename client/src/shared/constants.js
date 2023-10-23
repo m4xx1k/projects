@@ -31,6 +31,27 @@ export const ProjectStatus = [
         label: "Архівований"
     }
 ];
+export const ProjectStatusWithAll = [
+    {
+        value: null,
+        label: "Всі"
+    }, {
+        value: "open",
+        label: "Тільки відкритий"
+    },
+    {
+        value: "in_progress",
+        label: "В процесі"
+    },
+    {
+        value: "completed",
+        label: "Завершений"
+    },
+    {
+        value: "archived",
+        label: "Архівований"
+    }
+];
 export const UserRoles = [
     {
         value: "creator",

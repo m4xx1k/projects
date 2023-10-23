@@ -7,7 +7,8 @@ import IsCreator from "../../components/user/IsCreator.jsx";
 import IsParticipant from "../../components/user/IsParticipant.jsx";
 import ParticipantProjectRequestButton
     from "../../components/projects/ProjectRequests/ParticipantProjectRequestButton.jsx";
-import ProjectParticipantsList from "../../components/projects/ProjectParticipants/ProjectParticipantsList.jsx";
+import ProjectParticipantsList from "../../components/projects/ProjectParticipantsTable/index.jsx";
+import ProjectTaskList from "../../components/projects/ProjectTasksTable/index.jsx";
 
 const ProjectPage = () => {
     const {id} = useParams()
@@ -24,15 +25,24 @@ const ProjectPage = () => {
             <IsParticipant>
                 <ParticipantProjectRequestButton id={id}/>
             </IsParticipant>
-
+            <UILink to={`/chat/${id}`}>Чат</UILink>
             <ProjectInfo project={data?.project}/>
 
-            <ProjectParticipantsList id={id}/>
-            <UILink to={`/project/participants/${id}`}>Всі Учасники</UILink>
-            <UILink to={`/task/create/${id}`}>Створити Завдання</UILink>
+            <section className={'flex flex-col gap-1 w-full items-center'}>
+                <ProjectParticipantsList id={id} slice={3}/>
+                <UILink underline className={'text-lg'} to={`/project/participants/${id}`}>Подивитися всіх
+                    учасників</UILink>
+            </section>
+
+            <section className={'flex flex-col gap-1 w-full items-center'}>
+
+                <ProjectTaskList id={id} slice={3}/>
+                <UILink underline className={'text-lg'} to={`/project/${id}/tasks`}>Подивитися всі завдання</UILink>
+            </section>
         </div>
     );
 };
+
 const ProjectInfo = ({project}) => {
     if (!project) return null
     return (
@@ -74,4 +84,5 @@ const ProjectControls = ({project}) => {
         </div>
     )
 }
+
 export default ProjectPage;

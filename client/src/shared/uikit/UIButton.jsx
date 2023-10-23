@@ -3,7 +3,7 @@ import {clsx} from "clsx";
 
 const UiButton = ({
                       onClick = () => {
-                      }, children, bg = '', className = '', ...rest
+                      }, children, bg = '', className = '',py=1,px=3, ...rest
                   }) => {
     return (
         <button onClick={onClick} className={clsx(bg && {
@@ -11,7 +11,7 @@ const UiButton = ({
             'red': 'bg-rose-500',
             'orange': 'bg-orange-400',
             'blue': 'bg-blue-500',
-        }[bg], 'px-3 font-bold py-1 rounded text-sm border-none outline-none', className)}
+        }[bg], `px-${px} font-bold py-${py} rounded text-sm border-none outline-none`, className)}
                 {...rest}>
             {children}
         </button>

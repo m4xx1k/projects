@@ -1,18 +1,21 @@
 import React from 'react';
 import {UITitle} from "../../../shared/uikit/";
 import ProjectRequestsItem from "./ProjectRequestsItem.jsx";
+import {useFindAllProjectRequestsQuery} from "../../../redux/projectParticipant/projectParticipantApiSlice.js";
 
-const ProjectRequestsList = ({requests, project}) => {
-    if(!requests?.length) return null
+const ProjectRequestsList = ({project}) => {
+    const {data: requests} = useFindAllProjectRequestsQuery(project._id)
+    if (!requests?.length) return null
     return (
         <>
             <UITitle align={'start'}>Запити на участь у проекті</UITitle>
-            <div className={'bg-gray-200 p-12 mt-2 rounded w-full'}>
+            <ul className={'list-none bg-gray-200 px-8 pt-8 pb-4 mt-2 rounded-md w-full'}>
                 {
-                    requests.map(request => <ProjectRequestsItem key={request._id} request={request}
-                                                                 project={project}/>)
+                    requests.filter(req => req.status === 'new').map(request => <ProjectRequestsItem key={request._id}
+                                                                                                     request={request}
+                                                                                                     project={project}/>)
                 }
-            </div>
+            </ul>
         </>
 
     );
