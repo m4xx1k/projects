@@ -32,8 +32,24 @@ class ProjectService {
         return project;
     }
 
-    static async list() {
-        return await Project.find();
+    static async list(filter) {
+        if (filter) {
+            const {participants, developmentTime: development, status} = filter
+            const participantsCount = {}
+            const developmentTime = {}
+            if (!Number.isNaN(participants[0])) participantsCount.$gte = participants[0]
+            if (!Number.isNaN(participants[1])) participantsCount.$lte = participants[1]
+
+            if (!Number.isNaN(development[0])) developmentTime.$gte = development[0]
+            if (!Number.isNaN(development[1])) developmentTime.$lte = development[1]
+            const req = {participantsCount, developmentTime}
+            if (status && status!=="Всі") req.status = status
+            return await Project.find(req)
+
+        } else {
+            return await Project.find();
+        }
+
     }
 }
 

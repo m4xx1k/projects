@@ -14,7 +14,7 @@ app.use(cors({
 
 const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
-const indexRouter = require('./routers/index');
+const indexRouter = require('./src/routers/index');
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {

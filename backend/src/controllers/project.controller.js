@@ -66,11 +66,12 @@ class ProjectController {
         }
     }
     async findAll(req, res) {
-
+        const filter = req.body
         try {
-            const projects = await ProjectService.list();
+            const projects = await ProjectService.list(filter);
             res.json({projects});
         } catch (error) {
+            console.log(error)
             res.status(400).json({error: error.message});
         }
     }
