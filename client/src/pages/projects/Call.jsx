@@ -48,7 +48,7 @@ const Room = () => {
     const userVideo = useRef();
     const peersRef = useRef([]);
     useEffect(() => {
-        // socketRef.current = io.connect("http://localhost:5000");
+
         socketRef.current = io.connect("https://project-api-jtft.onrender.com");
         navigator.mediaDevices.getUserMedia({video: videoConstraints, audio: true}).then(stream => {
             userVideo.current.srcObject = stream;
@@ -80,39 +80,50 @@ const Room = () => {
                 const item = peersRef.current.find(p => p.peerID === payload.id);
                 item.peer.signal(payload.signal);
             });
-        })
+        }).catch(e => console.log('useeffect', e))
     }, []);
 
     function createPeer(userToSignal, callerID, stream) {
-        const peer = new Peer({
-            initiator: true,
-            trickle: false,
-            stream,
-        });
+        try {
+            const peer = new Peer({
+                initiator: true,
+                trickle: false,
+                stream,
+            });
 
-        peer.on("signal", signal => {
-            socketRef.current.emit("sending signal", {userToSignal, callerID, signal})
-        })
+            peer.on("signal", signal => {
+                socketRef.current.emit("sending signal", {userToSignal, callerID, signal})
+            })
 
-        return peer;
+            return peer;
+        } catch (e) {
+            console.log('createPeer', e)
+        }
+
+
     }
 
     function addPeer(incomingSignal, callerID, stream) {
-        const peer = new Peer({
-            initiator: false,
-            trickle: false,
-            stream,
-        })
+        try {
+            const peer = new Peer({
+                initiator: false,
+                trickle: false,
+                stream,
+            })
 
-        peer.on("signal", signal => {
-            socketRef.current.emit("returning signal", {signal, callerID})
-        })
+            peer.on("signal", signal => {
+                socketRef.current.emit("returning signal", {signal, callerID})
+            })
 
-        peer.signal(incomingSignal);
+            peer.signal(incomingSignal);
 
-        return peer;
+            return peer;
+        } catch (e) {
+            console.log('createPeer', e)
+        }
+
     }
-
+    console.log({peers})
     if (isLoading) return <UILoader/>
     if (!data?.project) return null
     return (

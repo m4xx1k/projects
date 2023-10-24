@@ -15,7 +15,7 @@ app.use(cors({
 const server = http.createServer(app);
 
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 app.use(bodyParser.json());
 const indexRouter = require('./src/routers/index');
 
@@ -48,12 +48,14 @@ const socketToRoom = {};
 io.on('connection', socket => {
     socket.on("join room", roomID => {
         if (users[roomID]) {
+            console.log({roomID})
             const length = users[roomID].length;
             if (length === 4) {
                 socket.emit("room full");
                 return;
             }
             users[roomID].push(socket.id);
+            console.log({users})
         } else {
             users[roomID] = [socket.id];
         }
@@ -64,10 +66,13 @@ io.on('connection', socket => {
     });
 
     socket.on("sending signal", payload => {
+        console.log("sending signal",{payload})
         io.to(payload.userToSignal).emit('user joined', { signal: payload.signal, callerID: payload.callerID });
     });
 
     socket.on("returning signal", payload => {
+        console.log("returning signal",{payload})
+
         io.to(payload.callerID).emit('receiving returned signal', { signal: payload.signal, id: socket.id });
     });
 
