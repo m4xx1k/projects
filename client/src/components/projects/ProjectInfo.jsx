@@ -26,11 +26,11 @@ const ProjectInfo = ({project}) => {
                          value={ProjectStatus.find(({value}) => value === project.status).label}/>
                 <UIValue name={'Стек'}
                          value={project.stack}/>
+                <UILink to={`/call/${project._id}`} bg={'green'} className={'w-36 font-bold text-center'}>Відеодзвінок</UILink>
                 <IsParticipant project={project._id}>
                     <UILink to={`/chat/${project._id}`} bg={'green'} className={'w-36 font-bold text-center'}>Чат
                         Проекту</UILink>
-                    <UILink to={`/call/${project._id}`} bg={'green'} className={'w-36 font-bold text-center'}>Чат
-                        Проекту</UILink>
+
 
                 </IsParticipant>
             </div>

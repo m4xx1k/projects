@@ -20,15 +20,15 @@ const ProjectRequestsItem = ({request, project}) => {
                 хоче приєднатись до проекту
                 <Link to={`/project/${project._id}`}>"{project.name}"</Link>
             </UITitle>
-            <section className={'flex justify-between gap-2 w-full'}>
-                <div className={'w-2/5 flex flex-col gap-1'}>
+            <section className={'flex justify-between gap-2 w-full flex-wrap'}>
+                <div className={'w-3/7 flex flex-col gap-1'}>
                     <UIValue name={'Курс'} value={`${user.course} курс`} valueWeight={'medium'}/>
                     <UIValue name={'Спеціальність'} value={user.specialty} valueWeight={'medium'}/>
                     <UIValue name={'Факультет'} value={user.faculty} valueWeight={'medium'}/>
                     <UIValue name={'Пошта'} value={user.email} valueWeight={'medium'}/>
                     <UIValue name={'Телефон'} value={user.phone} valueWeight={'medium'}/>
                 </div>
-                <p className={'w-3/5 text-sm'}>
+                <p className={'w-3/7 text-sm'}>
                     {user.about}
                 </p>
             </section>
