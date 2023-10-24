@@ -29,6 +29,8 @@ const ProjectInfo = ({project}) => {
                 <IsParticipant project={project._id}>
                     <UILink to={`/chat/${project._id}`} bg={'green'} className={'w-36 font-bold text-center'}>Чат
                         Проекту</UILink>
+                    <UILink to={`/call/${project._id}`} bg={'green'} className={'w-36 font-bold text-center'}>Чат
+                        Проекту</UILink>
 
                 </IsParticipant>
             </div>

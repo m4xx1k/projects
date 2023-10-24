@@ -1,10 +1,8 @@
 import React from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import {useDeleteProjectMutation, useFindOneProjectQuery} from "../../redux/project/projectApiSlice.js";
-import {UITitle, UILink, UIButton, UIValue, UISkeleton} from "../../shared/uikit/";
-import {ProjectComplexity, ProjectStatus} from "../../shared/constants.js";
+import { UILink, UIButton, UIValue, UISkeleton} from "../../shared/uikit/";
 import IsCreator from "../../components/user/IsCreator.jsx";
-import IsParticipant from "../../components/user/IsParticipant.jsx";
 import ParticipantProjectRequestButton
     from "../../components/projects/ProjectRequests/ParticipantProjectRequestButton.jsx";
 import ProjectParticipantsList from "../../components/projects/ProjectParticipantsTable/index.jsx";
