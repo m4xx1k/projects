@@ -13,7 +13,6 @@ import ProjectTasks from "./pages/projects/ProjectTasks.jsx";
 import TaskCreate from "./pages/projects/TaskCreate.jsx";
 import ProjectChat from "./pages/projects/ProjectChat.jsx";
 import EditProfile from "./pages/user/EditProfile.jsx";
-import Call from "./pages/projects/Call";
 
 
 function Router() {

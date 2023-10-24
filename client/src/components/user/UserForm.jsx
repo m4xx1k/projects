@@ -20,6 +20,7 @@ const UserForm = ({type = 'registration', user}) => {
     const signUp = async (formData) => {
         try {
             const {data} = await handleSignUp(formData)
+            console.log({data})
             if (data?.token && data?.user) {
                 dispatch(auth(data))
                 navigate('/')
@@ -38,9 +39,11 @@ const UserForm = ({type = 'registration', user}) => {
         }
     }
     const submit = async data => {
+        console.log(data)
         if (type === 'registration') {
-            await signUp(data)
-        }
+            const res = await signUp(data)
+        console.log(res)
+            }
         if (type === 'update') await update(data)
     }
     return (
