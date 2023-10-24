@@ -1,83 +1,123 @@
-import React, { useState, useEffect } from "react";
-import ReactWebRTC from "react-webrtc";
-import io from "socket.io-client";
+import React, {useEffect, useRef, useState} from 'react';
+import io from 'socket.io-client';
+import {useParams} from "react-router-dom";
 
-const CallRoom = ({ roomId }) => {
-    const [users, setUsers] = useState([]);
-    const [localStream, setLocalStream] = useState(null);
-    const [remoteStreams, setRemoteStreams] = useState([]);
+const Room = () => {
+    const {id: roomID} = useParams()
+    const socketRef = useRef();
+    const userVideoRef = useRef();
+    const [peers, setPeers] = useState([]); // Initialize peers as an empty array
 
     useEffect(() => {
-        const socket = io("https://localhost:5000");
+        // Initialize socket connection to the server
+        socketRef.current = io.connect('http://localhost:5000');
 
-        socket.on("all users", (users) => {
-            setUsers(users);
-        });
-
-        socket.on("user joined", (user) => {
-            setUsers([...users, user]);
-        });
-
-        socket.on("user left", (user) => {
-            setUsers(users.filter((u) => u.id !== user.id));
-        });
-
-        // Create a local video stream
-        const localStream = new MediaStream();
+        // Get access to user's camera and microphone
         navigator.mediaDevices
-            .getUserMedia({ audio: true, video: true })
+            .getUserMedia({video: true, audio: true})
             .then((stream) => {
-                setLocalStream(stream);
-            })
-            .catch((error) => {
-                console.log(error);
+                userVideoRef.current.srcObject = stream;
+
+                // Handle user joining the room
+                socketRef.current.emit('join room', roomID);
+
+                socketRef.current.on('all users', (users) => {
+                    const newPeers = [];
+                    users.forEach((userID) => {
+                        const peer = createPeer(userID, socketRef.current.id, stream);
+                        peers.current.push({
+                            peerID: userID,
+                            peer,
+                        });
+                        newPeers.push({
+                            peerID: userID,
+                            peer,
+                        });
+                    });
+                    setPeers(newPeers);
+                });
+
+                // Handle signaling data
+                socketRef.current.on('user joined', ({signal, callerID}) => {
+                    const peer = addPeer(signal, callerID, stream);
+                    peers.current.push({
+                        peerID: callerID,
+                        peer,
+                    });
+                    setPeers([...peers.current]);
+                });
             });
-
-        // Create a PeerJS connection
-        const peer = new PeerJS();
-
-        // Join the room
-        peer.on("open", () => {
-            socket.emit("join room", roomId);
-        });
-
-        // Create a peer connection for each remote user
-        peer.on("call", (call) => {
-            const remoteStream = new MediaStream();
-            call.answer(localStream);
-            call.on("stream", (stream) => {
-                remoteStream.addTrack(stream.getAudioTracks()[0]);
-                remoteStream.addTrack(stream.getVideoTracks()[0]);
-                setRemoteStreams([...remoteStreams, remoteStream]);
-            });
+        socketRef.current.on('user joined', ({signal, callerID}) => {
+            const peer = addPeer(signal, callerID, stream);
+            // peers.push(); // Push the new peer to the , array
+            setPeers([...peers, {peerID: callerID, peer}]); // Update the state to trigger a re-render
         });
 
         return () => {
-            socket.disconnect();
-            peer.disconnect();
+            // Cleanup code
+            socketRef.current.disconnect();
         };
-    }, [roomId]);
+    }, [roomID]);
 
-    // Render the video streams of all users
+    const createPeer = (userToSignal, callerID, stream) => {
+        // Create a new Peer object
+        const peer = new RTCPeerConnection({
+            iceServers: [
+                {
+                    urls: 'stun:stun.l.google.com:19302',
+                },
+            ],
+        });
+
+        // Add the user's stream to the connection
+        stream.getTracks().forEach((track) => peer.addTrack(track, stream));
+
+        // Listen for the ICE candidate event and send it to the peer
+        peer.onicecandidate = (event) => {
+            if (event.candidate) {
+                socketRef.current.emit('sending signal', {
+                    userToSignal,
+                    callerID,
+                    signal: event.candidate,
+                });
+            }
+        };
+
+        return peer;
+    };
+
+    const addPeer = (incomingSignal, callerID, stream) => {
+        const peer = new RTCPeerConnection({
+            iceServers: [
+                {
+                    urls: 'stun:stun.l.google.com:19302',
+                },
+            ],
+        });
+
+        // Add the user's stream to the connection
+        stream.getTracks().forEach((track) => peer.addTrack(track, stream));
+
+        // Set the remote description
+        peer.setRemoteDescription(incomingSignal);
+
+        // Create an answer and send it to the caller
+        peer.createAnswer().then((answer) => {
+            peer.setLocalDescription(answer);
+            socketRef.current.emit('returning signal', {answer, callerID});
+        });
+
+        return peer;
+    };
+
     return (
         <div>
-            <h1>Call Room</h1>
-            <div className="video-container">
-                <ReactWebRTC
-                    video={localStream}
-                    audio={localStream}
-                    muted={true}
-                />
-                {remoteStreams.map((stream, index) => (
-                    <ReactWebRTC
-                        key={index}
-                        video={stream}
-                        audio={stream}
-                    />
-                ))}
-            </div>
+            <video ref={userVideoRef} autoPlay muted/>
+            {peers?.map((peer) => (
+                <video key={peer.peerID} autoPlay/>
+            ))}
         </div>
     );
 };
 
-export default CallRoom;
+export default Room;

@@ -23,7 +23,6 @@ function Router() {
                 <Route element={<Layout/>}>
                     <Route path="/" element={<AllProjectsPage/>}/>
                     <Route path={'/project/:id'} element={<ProjectPage/>}/>
-                    <Route path={'/call/:id'} element={<Call/>}/>
                     <Route path={'/project/:id/tasks'} element={<ProjectTasks/>}/>
 
                     <Route path={'/project/participants/:id'} element={<ProjectParticipants/>}/>

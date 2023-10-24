@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useForm} from "react-hook-form";
 import {UITextField} from "../../shared/uikit/";
 import {useSingInMutation} from "../../redux/user/userApiSlice.js";
@@ -10,6 +10,7 @@ import UILink from "../../shared/uikit/UILink.jsx";
 
 const Login = () => {
     const {register, handleSubmit, formState:{errors}} = useForm();
+    const [error, setError] = useState('')
     const [handleSignIn, {isLoading} ] = useSingInMutation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -17,8 +18,11 @@ const Login = () => {
         try {
             const {data} = await handleSignIn(formData)
             if (data?.token && data?.user) {
+                setError('')
                 dispatch(auth(data))
                 navigate('/')
+            }else {
+                setError('Сталась помилка:/ Перевірте коректність введених даних')
             }
         } catch (e) {
             console.log(e)
@@ -45,8 +49,10 @@ const Login = () => {
                 error={errors.password}
 
             />
+                {error && <span className={'underline text-rose-500 text-xs'}>{error}</span>}
+
             <button disabled={isLoading} className={'bg-blue-500 text-white px-4 py-1 rounded mx-auto mt-6'} type="submit">Ввійти</button>
-            <UILink to={'/registration'} underline>Реєстрація</UILink>
+                <UILink to={'/registration'} underline>Реєстрація</UILink>
             </form>
         </div>
     );
