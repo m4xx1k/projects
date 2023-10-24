@@ -34,7 +34,12 @@ app.use('/', indexRouter);
 
 
 const socket = require("socket.io");
-const io = socket(server);
+const io = socket(server, {
+    cors: {
+        origin: ['http://localhost:5173','https://project-client.onrender.com'],
+        methods: ["GET", "POST", "PUT","DELETE"]
+    }
+});
 
 const users = {};
 
