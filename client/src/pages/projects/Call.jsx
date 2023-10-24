@@ -1,148 +1,83 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useState, useEffect } from "react";
+import ReactWebRTC from "react-webrtc";
 import io from "socket.io-client";
-import Peer from "simple-peer";
-import styled from "styled-components";
-import {useParams} from "react-router-dom";
-import {useFindOneProjectQuery} from "../../redux/project/projectApiSlice.js";
-import {UILoader} from "../../shared/uikit/index.js";
 
-const Container = styled.div`
-  padding: 20px;
-  display: flex;
-  height: 100vh;
-  width: 90%;
-  margin: auto;
-  flex-wrap: wrap;
-`;
+const CallRoom = ({ roomId }) => {
+    const [users, setUsers] = useState([]);
+    const [localStream, setLocalStream] = useState(null);
+    const [remoteStreams, setRemoteStreams] = useState([]);
 
-const StyledVideo = styled.video`
-  height: 40%;
-  width: 50%;
-`;
-
-const Video = (props) => {
-    const ref = useRef();
     useEffect(() => {
-        if (props.peer) {
-            props.peer.on("stream", (stream) => {
-                ref.current.srcObject = stream;
+        const socket = io("https://localhost:5000");
+
+        socket.on("all users", (users) => {
+            setUsers(users);
+        });
+
+        socket.on("user joined", (user) => {
+            setUsers([...users, user]);
+        });
+
+        socket.on("user left", (user) => {
+            setUsers(users.filter((u) => u.id !== user.id));
+        });
+
+        // Create a local video stream
+        const localStream = new MediaStream();
+        navigator.mediaDevices
+            .getUserMedia({ audio: true, video: true })
+            .then((stream) => {
+                setLocalStream(stream);
+            })
+            .catch((error) => {
+                console.log(error);
             });
-        }
-    }, [props.peer]);
 
-    useEffect(() => {
-        props.peer.on("stream", stream => {
-            ref.current.srcObject = stream;
-        })
-    }, []);
+        // Create a PeerJS connection
+        const peer = new PeerJS();
 
+        // Join the room
+        peer.on("open", () => {
+            socket.emit("join room", roomId);
+        });
+
+        // Create a peer connection for each remote user
+        peer.on("call", (call) => {
+            const remoteStream = new MediaStream();
+            call.answer(localStream);
+            call.on("stream", (stream) => {
+                remoteStream.addTrack(stream.getAudioTracks()[0]);
+                remoteStream.addTrack(stream.getVideoTracks()[0]);
+                setRemoteStreams([...remoteStreams, remoteStream]);
+            });
+        });
+
+        return () => {
+            socket.disconnect();
+            peer.disconnect();
+        };
+    }, [roomId]);
+
+    // Render the video streams of all users
     return (
-        <StyledVideo playsInline autoPlay ref={ref}/>
-    );
-}
-
-
-const videoConstraints = {
-    height: window.innerHeight / 2,
-    width: window.innerWidth / 2
-};
-
-const Room = () => {
-    const {id: roomID} = useParams()
-    const {data, isLoading} = useFindOneProjectQuery(roomID)
-    const [peers, setPeers] = useState([]);
-    const socketRef = useRef();
-    const userVideo = useRef();
-    const peersRef = useRef([]);
-    useEffect(() => {
-
-        socketRef.current = io.connect("https://project-api-jtft.onrender.com");
-        navigator.mediaDevices.getUserMedia({video: videoConstraints, audio: true}).then(stream => {
-            userVideo.current.srcObject = stream;
-            socketRef.current.emit("join room", roomID);
-            socketRef.current.on("all users", users => {
-                const peers = [];
-                users.forEach(userID => {
-                    const peer = createPeer(userID, socketRef.current.id, stream);
-                    peersRef.current.push({
-                        peerID: userID,
-                        peer,
-                    })
-                    peers.push(peer);
-                })
-                setPeers(peers);
-            })
-
-            socketRef.current.on("user joined", payload => {
-                const peer = addPeer(payload.signal, payload.callerID, stream);
-                peersRef.current.push({
-                    peerID: payload.callerID,
-                    peer,
-                })
-
-                setPeers(users => [...users, peer]);
-            });
-
-            socketRef.current.on("receiving returned signal", payload => {
-                const item = peersRef.current.find(p => p.peerID === payload.id);
-                item.peer.signal(payload.signal);
-            });
-        }).catch(e => console.log('useeffect', e))
-    }, []);
-
-    function createPeer(userToSignal, callerID, stream) {
-        try {
-            const peer = new Peer({
-                initiator: true,
-                trickle: false,
-                stream,
-            });
-
-            peer.on("signal", signal => {
-                socketRef.current.emit("sending signal", {userToSignal, callerID, signal})
-            })
-
-            return peer;
-        } catch (e) {
-            console.log('createPeer', e)
-        }
-
-
-    }
-
-    function addPeer(incomingSignal, callerID, stream) {
-        try {
-            const peer = new Peer({
-                initiator: false,
-                trickle: false,
-                stream,
-            })
-
-            peer.on("signal", signal => {
-                socketRef.current.emit("returning signal", {signal, callerID})
-            })
-
-            peer.signal(incomingSignal);
-
-            return peer;
-        } catch (e) {
-            console.log('createPeer', e)
-        }
-
-    }
-    console.log({peers})
-    if (isLoading) return <UILoader/>
-    if (!data?.project) return null
-    return (
-        <Container>
-            <StyledVideo muted ref={userVideo} autoPlay playsInline/>
-            {peers.map((peer, index) => {
-                return (
-                    <Video key={index} peer={peer}/>
-                );
-            })}
-        </Container>
+        <div>
+            <h1>Call Room</h1>
+            <div className="video-container">
+                <ReactWebRTC
+                    video={localStream}
+                    audio={localStream}
+                    muted={true}
+                />
+                {remoteStreams.map((stream, index) => (
+                    <ReactWebRTC
+                        key={index}
+                        video={stream}
+                        audio={stream}
+                    />
+                ))}
+            </div>
+        </div>
     );
 };
 
-export default Room;
+export default CallRoom;
