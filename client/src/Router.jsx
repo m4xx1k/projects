@@ -13,6 +13,7 @@ import ProjectTasks from "./pages/projects/ProjectTasks.jsx";
 import TaskCreate from "./pages/projects/TaskCreate.jsx";
 import ProjectChat from "./pages/projects/ProjectChat.jsx";
 import EditProfile from "./pages/user/EditProfile.jsx";
+import Call from "./pages/projects/Call";
 
 
 function Router() {
@@ -22,7 +23,9 @@ function Router() {
                 <Route element={<Layout/>}>
                     <Route path="/" element={<AllProjectsPage/>}/>
                     <Route path={'/project/:id'} element={<ProjectPage/>}/>
+                    <Route path={'/call/:id'} element={<Call/>}/>
                     <Route path={'/project/:id/tasks'} element={<ProjectTasks/>}/>
+
                     <Route path={'/project/participants/:id'} element={<ProjectParticipants/>}/>
                     <Route path="/registration" element={<Registration/>}/>
                     <Route path="/login" element={<Login/>}/>

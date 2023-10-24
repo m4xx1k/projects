@@ -95,7 +95,7 @@ const UserForm = ({type = 'registration', user}) => {
                 error={errors.email}
             />
             <UITextField
-                label={`${type === 'update' ? 'Новий' : ''} Пароль`}
+                label={`${type === 'update' ? 'Новий' : null} Пароль`}
                 inputProps={{type: "password", ...register("password", {required: true})}}
                 error={errors.password}
             />
